@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>機械学習　Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="display-4 mb-4">機械学習Api Demo</h1>
+
+        <hr>
+        <p><b>目的：ハロリノで一口（5万円）以上、投資してくれそうな人を予測する。その結果、投資してくれる人を増やす。</b></p>
+        <p>使い方 ：例えばイベントに参加した人にアンケートを取って、その人が大口投資をしてくれるか予測する（メールでもいい）。→リストを作って営業を掛けれる。</p>
+        <p>仕組み：ハロリノに溜まっている投資家の過去データを元に、機械学習で予測モデル作って判別している。</p>
+        <p>課題：このデモはテストデータなので必ずしも現実を反映していない。本番データで検証したい。データがもっと集まればリピーターになってくれそうな投資家も予測できる。</p>
+        <br>
+        <div id="output"></div>
+        <form id="addPost">
+            <!-- <div class="form-group">
+                <input type="text" id="param_1" class="form-control" placeholder="param_1">
+            </div>
+            <div class="form-group">
+                <input type="text" id="param_2" class="form-control" placeholder="param_2">
+            </div>
+            <div class="form-group">
+                <input type="text" id="param_3" class="form-control" placeholder="param_3">
+            </div> -->
+            <div class="form-group">
+                <label for="">職業</label>
+                <select name="example" id="param_1" class="form-control">
+                    <option value="0">会社員</option>
+                    <option value="1">公務員</option>
+                    <option value="2">会社役員</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="">収入源</label>
+                <select name="example" id="param_2" class="form-control">
+                    <option value="0">給与所得</option>
+                    <option value="1">利子所得</option>
+                    <option value="2">配当所得</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="">年収</label>
+                <select name="example" id="param_3" class="form-control">
+                    <option value="239">0〜239万円</option>
+                    <option value="500">240〜500万円</option>
+                    <option value="1000">501〜1000万円</option>
+                    <option value="2000">1001〜2000万円</option>
+                    <option value="3000">2001〜3000万円</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="">金融資産</label>
+                <select name="example" id="param_4" class="form-control">
+                    <option value="0">0〜500万円</option>
+                    <option value="500">501〜1000万円</option>
+                    <option value="1000">1001〜2000万円</option>
+                    <option value="2000">2001〜3000万円</option>
+                    <option value="3000">3001万円〜</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="">投資経験</label>
+                <select name="example" id="param_5" class="form-control">
+                    <option value="1">あり</option>
+                    <option value="0">なし</option>
+                </select>
+            </div>
+            <div id="response"></div>
+            <br>
+            <input type="submit" class="btn btn-secondary" value="判定">
+        </form>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('addPost').addEventListener('submit', addPost);
+
+        function addPost(e) {
+            let param_1 = document.getElementById('param_1').value;
+            let param_2 = document.getElementById('param_2').value;
+            let param_3 = document.getElementById('param_3').value;
+            let param_4 = document.getElementById('param_4').value;
+            let param_5 = document.getElementById('param_5').value;
+
+            var arr = [parseInt(param_1), parseInt(param_2), parseInt(param_3), parseInt(param_4), parseInt(param_5)];
+            console.log(arr);
+
+            e.preventDefault();
+
+            axios
+                .post(" https://ml-api-ew.herokuapp.com/", {
+                    //invest: [30, 40]
+                    invest: arr
+
+                })
+                .then(response => {
+                    console.log("body:", response.data);
+                    document.getElementById('response').innerHTML = showRes(response.data.pred_label);
+                });
+
+        }
+
+
+        function showRes(params) {
+            if (params === 1) {
+                return "<h3>投資する</h3>"
+
+            } else {
+                return "<h3>投資しない</h3>"
+            }
+        }
+    </script>
+</body>
+
+</html>
