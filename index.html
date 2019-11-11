@@ -33,7 +33,7 @@
             <div class="form-group">
                 <input type="text" id="param_3" class="form-control" placeholder="param_3">
             </div> -->
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="">職業</label>
                 <select name="example" id="param_1" class="form-control">
                     <option value="0">会社員</option>
@@ -41,14 +41,14 @@
                     <option value="2">自営業</option>
                     <option value="3">その他</option>
                 </select>
-            </div>
-            <div class="form-group">
+            </div> -->
+            <!-- <div class="form-group">
                 <label for="">収入源</label>
                 <select name="example" id="param_2" class="form-control">
                     <option value="0">給与所得</option>
                     <option value="1">その他</option>
                 </select>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="">年収</label>
                 <select name="example" id="param_3" class="form-control">
@@ -63,8 +63,8 @@
             <div class="form-group">
                 <label for="">金融資産</label>
                 <select name="  example" id="param_4" class="form-control">
-                    <option value="0">なし</option>
-                    <option value="250">250〜</option>
+                    <!-- <option value="0">なし</option> -->
+                    <option value="250">0〜250万円</option>
                     <option value="750">501〜1000万円</option>
                     <option value="1500">1001〜2000万円</option>
                     <option value="2500">2001〜3000万円</option>
@@ -88,19 +88,21 @@
         document.getElementById('addPost').addEventListener('submit', addPost);
 
         function addPost(e) {
-            let param_1 = document.getElementById('param_1').value;
-            let param_2 = document.getElementById('param_2').value;
+            // let param_1 = document.getElementById('param_1').value;
+            // let param_2 = document.getElementById('param_2').value;
             let param_3 = document.getElementById('param_3').value;
             let param_4 = document.getElementById('param_4').value;
             let param_5 = document.getElementById('param_5').value;
 
-            var arr = [parseInt(param_1), parseInt(param_2), parseInt(param_3), parseInt(param_4), parseInt(param_5)];
+            var arr = [parseInt(param_3), parseInt(param_4), parseInt(param_5)];
             console.log(arr);
 
             e.preventDefault();
 
             axios
-                .post(" https://ml-api-ew.herokuapp.com/", {
+                //.post(" https://ml-api-ew.herokuapp.com/", {
+                .post("http://127.0.0.1:5000/", {
+
                     //invest: [30, 40]
                     invest: arr
 
@@ -115,10 +117,12 @@
 
         function showRes(params) {
             if (params === 1) {
-                return "<h3>投資する</h3>"
-
+                return "<h3>優良投資家</h3>"
+            } else if (params === 2) {
+                return "<h3>可能性低い</h3>"
             } else {
-                return "<h3>投資しない</h3>"
+                return "<h3>投資する可能性有り</h3>"
+
             }
         }
     </script>
